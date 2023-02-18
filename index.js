@@ -27,8 +27,19 @@ app.get("/api", async (req, res) => {
     let browser = await puppeteer.launch(options);
 
     let page = await browser.newPage();
-    await page.goto("https://www.google.com");
-    res.send(await page.title());
+    await page.goto("https://www.google.co.in/books/edition/The_Cormoran_Strike_Novels_Books_1_4/kDn_DwAAQBAJ?hl=en");
+
+    const [el] = await page.$x('//*[@id="tsuid_7"]');
+    const src = await el.getProperty('src')
+    srcTxt = await src.jsonValue()
+
+    const [name] = await page.$x('//*[@id="bep-tab-content"]/g-flippy-carousel/div/div/ol/li[1]/span/div/div/div/div/div[3]/div/div[2]/div[2]/div[4]/div/div/div/div[2]/text()');
+    const txt = await name.getProperty('textContent')
+    rawTxt = await txt.jsonValue()
+    res.json({
+        "img": srcTxt,
+        "name": rawTxt
+    });
   } catch (err) {
     console.error(err);
     return null;
