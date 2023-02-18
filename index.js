@@ -1,4 +1,6 @@
 const app = require("express")();
+const cors = require('cors');
+app.use(cors());
 
 let chrome = {};
 let puppeteer;
@@ -37,8 +39,8 @@ app.get("/api", async (req, res) => {
     const txt = await name.getProperty('textContent')
     rawTxt = await txt.jsonValue()
     res.json({
-        "img": srcTxt,
-        "name": rawTxt
+      "img": srcTxt,
+      "name": rawTxt
     });
   } catch (err) {
     console.error(err);
